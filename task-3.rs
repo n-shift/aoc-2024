@@ -9,7 +9,7 @@ fn prod(line: String) -> u32 {
                     let mut to_prod = [String::new(),String::new()];
                     let mut idx = 0;
                     stream.nth(2);
-                    while let Some(char) = stream.next() {
+                    for char in stream.by_ref() {
                         match char {
                             '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' => to_prod[idx] += &char.to_string(),
                             ',' => idx = 1,

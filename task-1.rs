@@ -5,13 +5,11 @@ fn main() {
     let reader = BufReader::new(file);
     let mut l1: [u32; 1000] = [0; 1000];
     let mut l2: [u32; 1000] = [0; 1000];
-    let mut idx = 0;
-    for line in reader.lines() {
+    for (idx, line) in reader.lines().enumerate() {
         let line = line.unwrap();
         let numerals: Vec<&str> = line.split_whitespace().collect();
         l1[idx] = numerals[0].parse::<u32>().unwrap();
         l2[idx] = numerals[1].parse::<u32>().unwrap();
-        idx+=1;
     }
     l1.sort();
     l2.sort();
