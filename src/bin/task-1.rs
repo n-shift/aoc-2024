@@ -39,8 +39,7 @@ const FILE: &[u8] = include_bytes!("../../input/1.txt");
 
 fn main() {
     let mut list = parse(FILE);
-    list[0].sort();
-    list[1].sort();
+    list.iter_mut().for_each(|l| l.sort());
     let distance: u32 = list[0]
         .iter()
         .zip(list[1].iter())
