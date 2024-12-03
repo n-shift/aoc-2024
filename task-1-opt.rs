@@ -41,12 +41,15 @@ fn main() {
     let mut list = sp(FILE);
     list[0].sort();
     list[1].sort();
-    let mut distance = 0;
-    let mut similarity = 0;
-    for idx in 0..1000 {
-        distance += list[0][idx].abs_diff(list[1][idx]);
-        similarity += list[0][idx] * (list[1].iter().filter(|&n| *n == list[0][idx]).count() as u32)
-    }
+    let distance: u32 = list[0]
+        .iter()
+        .zip(list[1].iter())
+        .map(|(l, r)| l.abs_diff(*r))
+        .sum();
+    let similarity: u32 = list[0]
+        .iter()
+        .map(|n| n * list[1].iter().filter(|m| *m == n).count() as u32)
+        .sum();
     println!("Distance: {distance}");
     println!("Similarity: {similarity}");
 }
