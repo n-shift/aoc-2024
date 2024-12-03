@@ -1,4 +1,4 @@
-// this whole file is just some blabbering, not even sure i've managed to optimize it
+// blabbering and toying around with precompiling stuff
 const fn to_u32(bytes: &[u8], start: usize, end: usize) -> u32 {
     let mut res: u32 = 0;
     let mut idx = start;
@@ -8,8 +8,8 @@ const fn to_u32(bytes: &[u8], start: usize, end: usize) -> u32 {
     }
     res
 }
-// short for split & parse
-const fn sp(bytes: &[u8]) -> [[u32; 1000]; 2] {
+
+const fn parse(bytes: &[u8]) -> [[u32; 1000]; 2] {
     let mut res = [[0; 1000]; 2];
     let mut select_res = 0;
     let mut idx_start = 0;
@@ -19,7 +19,7 @@ const fn sp(bytes: &[u8]) -> [[u32; 1000]; 2] {
         while idx_curr < bytes.len() && bytes[idx_curr] != b' ' && bytes[idx_curr] != b'\n' {
             idx_curr += 1;
         }
-        // i want to sleep
+
         if to_u32(bytes, idx_start, idx_curr) != 0 {
             res[select_res][idx] = to_u32(bytes, idx_start, idx_curr);
             if select_res == 0 {
@@ -38,7 +38,7 @@ const fn sp(bytes: &[u8]) -> [[u32; 1000]; 2] {
 const FILE: &[u8] = include_bytes!("../../input/1.txt");
 
 fn main() {
-    let mut list = sp(FILE);
+    let mut list = parse(FILE);
     list[0].sort();
     list[1].sort();
     let distance: u32 = list[0]
