@@ -7,14 +7,14 @@ fn prod(line: String) -> u32 {
             'm' => {
                 if &stream.as_str()[..3] == "ul(" && enabled {
                     let mut to_prod = [String::new(), String::new()];
-                    let mut idx = 0;
+                    let mut switch = false;
                     stream.nth(2);
                     for char in stream.by_ref() {
                         match char {
                             '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' => {
-                                to_prod[idx] += &char.to_string()
+                                to_prod[if !switch {0} else {1}] += &char.to_string()
                             }
-                            ',' => idx = 1,
+                            ',' => switch = true,
                             ')' => {
                                 prod += to_prod
                                     .map(|n| n.parse::<u32>().unwrap())
