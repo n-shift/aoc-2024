@@ -6,22 +6,27 @@ fn prod(line: String) -> u32 {
         match char {
             'm' => {
                 if &stream.as_str()[..3] == "ul(" && enabled {
-                    let mut to_prod = [String::new(),String::new()];
+                    let mut to_prod = [String::new(), String::new()];
                     let mut idx = 0;
                     stream.nth(2);
                     for char in stream.by_ref() {
                         match char {
-                            '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' => to_prod[idx] += &char.to_string(),
+                            '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' => {
+                                to_prod[idx] += &char.to_string()
+                            }
                             ',' => idx = 1,
                             ')' => {
-                                prod += to_prod.map(|n| n.parse::<u32>().unwrap()).iter().product::<u32>();
-                                break
-                            },
+                                prod += to_prod
+                                    .map(|n| n.parse::<u32>().unwrap())
+                                    .iter()
+                                    .product::<u32>();
+                                break;
+                            }
                             _ => break,
                         }
                     }
                 }
-            },
+            }
             'd' => {
                 if &stream.as_str()[..3] == "o()" {
                     stream.nth(2);
@@ -41,4 +46,3 @@ fn main() {
     let file = std::fs::read_to_string("input-3.txt").unwrap();
     println!("{}", prod(file));
 }
-

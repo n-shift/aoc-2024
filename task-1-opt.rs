@@ -9,8 +9,8 @@ const fn to_u32(bytes: &[u8], start: usize, end: usize) -> u32 {
     res
 }
 // short for split & parse
-const fn sp(bytes: &[u8]) -> [[u32;1000];2] {
-    let mut res = [[0;1000];2];
+const fn sp(bytes: &[u8]) -> [[u32; 1000]; 2] {
+    let mut res = [[0; 1000]; 2];
     let mut select_res = 0;
     let mut idx_start = 0;
     let mut idx_curr = 0;
@@ -28,7 +28,7 @@ const fn sp(bytes: &[u8]) -> [[u32;1000];2] {
                 select_res = 0;
                 idx += 1;
             }
-        } 
+        }
         idx_curr += 1;
         idx_start = idx_curr;
     }

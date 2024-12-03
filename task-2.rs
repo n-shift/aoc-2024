@@ -3,7 +3,9 @@ use std::io::{prelude::*, BufReader};
 
 fn is_safe(numerals: &[u8]) -> bool {
     let increasing = numerals[0] < numerals[1];
-    numerals[..].windows(2).all(|w| w[0].abs_diff(w[1]) >= 1 && w[0].abs_diff(w[1]) <= 3 && (w[0] < w[1]) == increasing)
+    numerals[..].windows(2).all(|w| {
+        w[0].abs_diff(w[1]) >= 1 && w[0].abs_diff(w[1]) <= 3 && (w[0] < w[1]) == increasing
+    })
 }
 
 fn main() {
@@ -13,7 +15,10 @@ fn main() {
     let mut damp_counter = 0;
     for line in reader.lines() {
         let line = line.unwrap();
-        let numerals = line.split_whitespace().map(|n| n.parse::<u8>().unwrap()).collect::<Vec<_>>();
+        let numerals = line
+            .split_whitespace()
+            .map(|n| n.parse::<u8>().unwrap())
+            .collect::<Vec<_>>();
 
         if is_safe(&numerals[..]) {
             safety_counter += 1;
