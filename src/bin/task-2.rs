@@ -9,7 +9,7 @@ fn is_safe(numerals: &[u8]) -> bool {
 }
 
 fn main() {
-    let file = File::open("test.txt").unwrap();
+    let file = File::open("input/2.txt").unwrap();
     let reader = BufReader::new(file);
     let mut safety_counter = 0;
     let mut damp_counter = 0;

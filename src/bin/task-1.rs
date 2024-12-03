@@ -1,7 +1,7 @@
 use std::fs::File;
 use std::io::{prelude::*, BufReader};
 fn main() {
-    let file = File::open("input-1.txt").unwrap();
+    let file = File::open("input/1.txt").unwrap();
     let reader = BufReader::new(file);
     let mut l1: [u32; 1000] = [0; 1000];
     let mut l2: [u32; 1000] = [0; 1000];

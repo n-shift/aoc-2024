@@ -35,7 +35,7 @@ const fn sp(bytes: &[u8]) -> [[u32; 1000]; 2] {
     res
 }
 
-const FILE: &[u8] = include_bytes!("input-1.txt");
+const FILE: &[u8] = include_bytes!("../../input/1.txt");
 
 fn main() {
     let mut list = sp(FILE);

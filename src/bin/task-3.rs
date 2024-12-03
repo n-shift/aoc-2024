@@ -43,7 +43,7 @@ fn prod(line: String, ignore_instr: bool) -> u32 {
 }
 
 fn main() {
-    let file = std::fs::read_to_string("input-3.txt").unwrap();
+    let file = std::fs::read_to_string("input/3.txt").unwrap();
     println!("No instructions: {}", prod(file.clone(), true));
     println!("W/ instructions: {}", prod(file, false));
 }
