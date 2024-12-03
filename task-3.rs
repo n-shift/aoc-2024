@@ -1,18 +1,18 @@
-fn prod(line: String) -> u32 {
+fn prod(line: String, ignore_instr: bool) -> u32 {
     let mut stream = line.chars();
     let mut prod = 0;
     let mut enabled = true;
     while let Some(char) = stream.next() {
         match char {
             'm' => {
-                if &stream.as_str()[..3] == "ul(" && enabled {
+                if &stream.as_str()[..3] == "ul(" && (enabled || ignore_instr) {
                     let mut to_prod = [String::new(), String::new()];
                     let mut switch = false;
                     stream.nth(2);
                     for char in stream.by_ref() {
                         match char {
                             '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' => {
-                                to_prod[if !switch {0} else {1}] += &char.to_string()
+                                to_prod[if !switch { 0 } else { 1 }] += &char.to_string()
                             }
                             ',' => switch = true,
                             ')' => {
@@ -44,5 +44,6 @@ fn prod(line: String) -> u32 {
 
 fn main() {
     let file = std::fs::read_to_string("input-3.txt").unwrap();
-    println!("{}", prod(file));
+    println!("No instructions: {}", prod(file.clone(), true));
+    println!("W/ instructions: {}", prod(file, false));
 }
