@@ -43,7 +43,8 @@ fn p1() -> usize {
                     buf_rl[2] = c[2][i + 1];
                     buf_rl[3] = c[3][i];
 
-                    usize::from(&buf_lr == b"XMAS" || &buf_lr == b"SAMX") + usize::from(&buf_rl == b"XMAS" || &buf_rl == b"SAMX")
+                    usize::from(&buf_lr == b"XMAS" || &buf_lr == b"SAMX")
+                        + usize::from(&buf_rl == b"XMAS" || &buf_rl == b"SAMX")
                 })
                 .sum::<usize>()
         })
@@ -51,28 +52,32 @@ fn p1() -> usize {
     horizontal + vertical + diagonal
 }
 
-fn p2()  -> usize {
-    FILE
-    .as_bytes()
-    .chunks(ROW_LENGTH + 1)
-    .collect::<Vec<_>>()
-    .windows(3)
-    .map(|c|{
-        let mut buf_lr = [0;2];
-        let mut buf_rl = [0;2];
-        (1..ROW_LENGTH - 1)
-            .map(|i| {
-                if c[1][i] != b'A' {
-                    0
-                } else {
-                    buf_lr[0] = c[0][i - 1];
-                    buf_lr[1] = c[2][i + 1];
-                    buf_rl[0] = c[0][i + 1];
-                    buf_rl[1] = c[2][i - 1];
-                    usize::from((&buf_lr == b"MS" || &buf_lr == b"SM") && (&buf_rl == b"MS" || &buf_rl == b"SM"))
-                }
-            }).sum::<usize>()
-    }).sum::<usize>()
+fn p2() -> usize {
+    FILE.as_bytes()
+        .chunks(ROW_LENGTH + 1)
+        .collect::<Vec<_>>()
+        .windows(3)
+        .map(|c| {
+            let mut buf_lr = [0; 2];
+            let mut buf_rl = [0; 2];
+            (1..ROW_LENGTH - 1)
+                .map(|i| {
+                    if c[1][i] != b'A' {
+                        0
+                    } else {
+                        buf_lr[0] = c[0][i - 1];
+                        buf_lr[1] = c[2][i + 1];
+                        buf_rl[0] = c[0][i + 1];
+                        buf_rl[1] = c[2][i - 1];
+                        usize::from(
+                            (&buf_lr == b"MS" || &buf_lr == b"SM")
+                                && (&buf_rl == b"MS" || &buf_rl == b"SM"),
+                        )
+                    }
+                })
+                .sum::<usize>()
+        })
+        .sum::<usize>()
 }
 
 fn main() {
