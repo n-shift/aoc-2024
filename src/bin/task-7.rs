@@ -32,18 +32,18 @@ fn calibrate(concat: bool) -> u64 {
             let positions = given.len() - 1;
             let perms: u64 = (2u64 + concat as u64).pow(positions as u32);
             if (0..perms).any(|p| {
-                let mut operators = format!("{:0>positions$}", format_radix(p, 2 + concat as u64)).chars().collect::<Vec<char>>();
+                let mut operators = format!("{:0>positions$}", format_radix(p, 2 + concat as u64))
+                    .chars()
+                    .collect::<Vec<char>>();
                 desired
                     == given
                         .clone()
                         .into_iter()
-                        .reduce(|acc, n| {
-                            match operators.pop().unwrap() {
-                                '0' => acc + n,
-                                '1' => acc * n,
-                                '2' => acc * 10u64.pow(n.ilog10() + 1) + n,
-                                _ => panic!("how."),
-                            }
+                        .reduce(|acc, n| match operators.pop().unwrap() {
+                            '0' => acc + n,
+                            '1' => acc * n,
+                            '2' => acc * 10u64.pow(n.ilog10() + 1) + n,
+                            _ => panic!("how."),
                         })
                         .unwrap()
             }) {
