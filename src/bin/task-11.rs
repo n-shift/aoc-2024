@@ -46,14 +46,15 @@ fn main() {
         .map(|n| n.parse::<u64>().unwrap())
         .collect::<_>();
     let mut cache: HashMap<(u64, usize), u64> = HashMap::new();
-    let cached_25 = stones
+    let (cached_25, cached_75) = stones
         .iter()
-        .map(|s| sum_blink_cached(*s, 25, &mut cache))
-        .sum::<usize>();
+        .map(|s| {
+            (
+                sum_blink_cached(*s, 25, &mut cache),
+                sum_blink_cached(*s, 75, &mut cache),
+            )
+        })
+        .fold((0, 0), |acc, x| (acc.0 + x.0, acc.1 + x.1));
     println!("After 25: {cached_25}");
-    let cached_75 = stones
-        .iter()
-        .map(|s| sum_blink_cached(*s, 75, &mut cache))
-        .sum::<usize>();
     println!("After 75: {cached_75}");
 }
