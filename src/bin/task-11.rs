@@ -45,12 +45,15 @@ fn main() {
         .split(' ')
         .map(|n| n.parse::<u64>().unwrap())
         .collect::<_>();
-    let blinked = (0..25).fold(stones.clone(), |acc, _| blink(acc));
-    println!("After 25: {}", blinked.len());
     let mut cache: HashMap<(u64, usize), u64> = HashMap::new();
-    let cached = stones
+    let cached_25 = stones
+        .iter()
+        .map(|s| sum_blink_cached(*s, 25, &mut cache))
+        .sum::<usize>();
+    println!("After 25: {cached_25}");
+    let cached_75 = stones
         .iter()
         .map(|s| sum_blink_cached(*s, 75, &mut cache))
         .sum::<usize>();
-    println!("After 75: {}", cached);
+    println!("After 75: {cached_75}");
 }
