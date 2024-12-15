@@ -1,37 +1,30 @@
 const INPUT: &str = include_str!("../../input/11.txt");
 
 type Stones = Vec<u64>;
-use std::collections::HashMap;
+type Cache = std::collections::HashMap<(u64, usize), u64>;
 
-fn blink(stones: Stones) -> Stones {
-    let mut blinked: Stones = stones;
-    let mut buffer: Stones = Vec::new();
-    blinked.iter_mut().for_each(|stone| {
-        if *stone == 0 {
-            *stone = 1;
+fn blink(stone: u64) -> Stones {
+    if stone == 0 {
+        vec![1]
+    } else {
+        let engraved = stone.to_string();
+        if engraved.len() % 2 == 0 {
+            let (a, b) = engraved.split_at(engraved.len() / 2);
+            vec![a.parse::<u64>().unwrap(), b.parse::<u64>().unwrap()]
         } else {
-            let engraved = stone.to_string();
-            if engraved.len() % 2 == 0 {
-                let (a, b) = engraved.split_at(engraved.len() / 2);
-                *stone = a.parse::<u64>().unwrap();
-                buffer.push(b.parse::<u64>().unwrap());
-            } else {
-                *stone *= 2024;
-            }
+            vec![stone * 2024]
         }
-    });
-    blinked.extend(buffer);
-    blinked
+    }
 }
 
-fn sum_blink_cached(cur: u64, to_iter: usize, cache: &mut HashMap<(u64, usize), u64>) -> usize {
+fn sum_blink_cached(cur: u64, to_iter: usize, cache: &mut Cache) -> usize {
     if to_iter == 0 {
         return 1;
     }
     if let Some(entry) = cache.get(&(cur, to_iter)) {
         return *entry as usize;
     }
-    let amount = blink(vec![cur])
+    let amount = blink(cur)
         .iter()
         .map(|v| sum_blink_cached(*v, to_iter - 1, cache))
         .sum::<usize>();
@@ -45,7 +38,7 @@ fn main() {
         .split(' ')
         .map(|n| n.parse::<u64>().unwrap())
         .collect::<_>();
-    let mut cache: HashMap<(u64, usize), u64> = HashMap::new();
+    let mut cache: Cache = std::collections::HashMap::new();
     let (cached_25, cached_75) = stones
         .iter()
         .map(|s| {
