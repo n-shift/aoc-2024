@@ -15,10 +15,8 @@ fn main() {
     let mut damp_counter = 0;
     for line in reader.lines() {
         let line = line.unwrap();
-        let numerals = line
-            .split_whitespace()
-            .map(|n| n.parse::<u8>().unwrap())
-            .collect::<Vec<_>>();
+        let numerals =
+            line.split_whitespace().map(|n| n.parse::<u8>().unwrap()).collect::<Vec<_>>();
 
         if is_safe(&numerals[..]) {
             safety_counter += 1;

@@ -20,19 +20,9 @@ impl ClawMachine {
         let parsed = note
             .lines()
             .enumerate()
-            .map(|(i, l)| {
-                if i == 2 {
-                    parse_line(l, correct)
-                } else {
-                    parse_line(l, false)
-                }
-            })
+            .map(|(i, l)| if i == 2 { parse_line(l, correct) } else { parse_line(l, false) })
             .collect::<Vec<_>>();
-        Self {
-            a: parsed[0],
-            b: parsed[1],
-            prize: parsed[2],
-        }
+        Self { a: parsed[0], b: parsed[1], prize: parsed[2] }
     }
     fn solve(&self) -> (usize, usize) {
         let det = (self.a.0 * self.b.1) as isize - (self.a.1 * self.b.0) as isize;
@@ -55,14 +45,8 @@ impl ClawMachine {
 }
 
 fn main() {
-    let total = INPUT
-        .split("\n\n")
-        .map(|n| ClawMachine::init(n, false).cost())
-        .sum::<usize>();
+    let total = INPUT.split("\n\n").map(|n| ClawMachine::init(n, false).cost()).sum::<usize>();
     println!("Std: {total}");
-    let total = INPUT
-        .split("\n\n")
-        .map(|n| ClawMachine::init(n, true).cost())
-        .sum::<usize>();
+    let total = INPUT.split("\n\n").map(|n| ClawMachine::init(n, true).cost()).sum::<usize>();
     println!("Cor: {total}");
 }

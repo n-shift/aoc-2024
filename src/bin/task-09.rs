@@ -29,11 +29,7 @@ fn p1() {
             compact.push(temp.unwrap());
         }
     }
-    let checksum = compact
-        .iter()
-        .enumerate()
-        .map(|(pos, id)| pos * (*id as usize))
-        .sum::<usize>();
+    let checksum = compact.iter().enumerate().map(|(pos, id)| pos * (*id as usize)).sum::<usize>();
     println!("{checksum}");
 }
 

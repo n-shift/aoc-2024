@@ -21,10 +21,7 @@ fn main() {
             p1 += update[update.len() / 2];
         } else {
             for &u in &update {
-                let count = rules
-                    .iter_second(u)
-                    .filter(|&first| contains[first].is_some())
-                    .count();
+                let count = rules.iter_second(u).filter(|&first| contains[first].is_some()).count();
                 counts[u] = count;
             }
             update.sort_unstable_by_key(|&i| counts[i]);
@@ -77,10 +74,7 @@ impl RuleSets {
             rules_second[second].push(first);
         }
 
-        Self {
-            first: rules_first,
-            second: rules_second,
-        }
+        Self { first: rules_first, second: rules_second }
     }
 
     fn iter_first(&self, i: usize) -> impl Iterator<Item = usize> + '_ {

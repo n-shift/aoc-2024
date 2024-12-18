@@ -25,13 +25,7 @@ impl Map {
                 antennas.push(*c)
             }
         }
-        Map {
-            data,
-            antinodes,
-            antennas,
-            height,
-            width,
-        }
+        Map { data, antinodes, antennas, height, width }
     }
 
     fn compute_antinodes(&mut self) {
@@ -98,11 +92,7 @@ impl Map {
     }
 
     fn count_antinodes(&self) -> usize {
-        self.antinodes
-            .iter()
-            .flatten()
-            .filter(|&x| *x == ANTINODE)
-            .count()
+        self.antinodes.iter().flatten().filter(|&x| *x == ANTINODE).count()
     }
 }
 
@@ -118,11 +108,7 @@ fn part_two(mut map: Map) {
 
 fn main() {
     let contents = read_to_string(INPUT_FILE).unwrap();
-    let map_data = contents
-        .trim()
-        .lines()
-        .map(|x| x.chars().collect())
-        .collect();
+    let map_data = contents.trim().lines().map(|x| x.chars().collect()).collect();
     let map = Map::from_data(map_data);
 
     part_one(map.clone());

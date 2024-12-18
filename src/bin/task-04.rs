@@ -4,11 +4,7 @@ fn p1() -> usize {
     let bytes = FILE.as_bytes();
     let horizontal: usize = bytes
         .chunks(ROW_LENGTH + 1)
-        .map(|c| {
-            c.windows(4)
-                .filter(|l| l == b"XMAS" || l == b"SAMX")
-                .count()
-        })
+        .map(|c| c.windows(4).filter(|l| l == b"XMAS" || l == b"SAMX").count())
         .sum();
     // LOOKS LIKE A DIAGONAL OMG
     let vertical = (0..ROW_LENGTH)

@@ -40,15 +40,9 @@ const FILE: &[u8] = include_bytes!("../../input/1.txt");
 fn main() {
     let mut list = parse(FILE);
     list.iter_mut().for_each(|l| l.sort());
-    let distance: u32 = list[0]
-        .iter()
-        .zip(list[1].iter())
-        .map(|(l, r)| l.abs_diff(*r))
-        .sum();
-    let similarity: u32 = list[0]
-        .iter()
-        .map(|n| n * list[1].iter().filter(|m| *m == n).count() as u32)
-        .sum();
+    let distance: u32 = list[0].iter().zip(list[1].iter()).map(|(l, r)| l.abs_diff(*r)).sum();
+    let similarity: u32 =
+        list[0].iter().map(|n| n * list[1].iter().filter(|m| *m == n).count() as u32).sum();
     println!("Distance: {distance}");
     println!("Similarity: {similarity}");
 }

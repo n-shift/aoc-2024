@@ -62,13 +62,7 @@ fn part_1() {
         })
     });
 
-    println!(
-        "Cost: {}",
-        crops
-            .iter()
-            .map(|v| (v.len() as u32) * perimeter(v))
-            .sum::<u32>()
-    );
+    println!("Cost: {}", crops.iter().map(|v| (v.len() as u32) * perimeter(v)).sum::<u32>());
 }
 
 fn get_boundaries(points: &HashSet<(i32, i32)>) -> HashSet<(i32, i32)> {
@@ -94,21 +88,14 @@ fn count_corners(region: &HashSet<(i32, i32)>) -> usize {
     ];
     region.iter().for_each(|&(px, py)| {
         kernels.iter().enumerate().for_each(|(i, k)| {
-            if k.iter()
-                .map(|(kx, ky)| (px + kx, py + ky))
-                .all(|v| !region.contains(&v))
-            {
+            if k.iter().map(|(kx, ky)| (px + kx, py + ky)).all(|v| !region.contains(&v)) {
                 corners.insert((px, py, i));
             }
         })
     });
 
-    let inner_kernels = [
-        [(-1, 0), (0, -1)],
-        [(-1, 0), (0, 1)],
-        [(1, 0), (0, -1)],
-        [(1, 0), (0, 1)],
-    ];
+    let inner_kernels =
+        [[(-1, 0), (0, -1)], [(-1, 0), (0, 1)], [(1, 0), (0, -1)], [(1, 0), (0, 1)]];
     let mut inner_corners = HashSet::new();
     get_boundaries(region).iter().for_each(|(px, py)| {
         inner_kernels.iter().enumerate().for_each(|(i, k)| {
@@ -156,13 +143,7 @@ fn part_2() {
         })
     });
 
-    println!(
-        "Discount: {}",
-        crops
-            .iter()
-            .map(|v| v.len() * count_corners(v))
-            .sum::<usize>()
-    );
+    println!("Discount: {}", crops.iter().map(|v| v.len() * count_corners(v)).sum::<usize>());
 }
 
 fn main() {

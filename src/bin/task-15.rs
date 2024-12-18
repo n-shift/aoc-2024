@@ -1,5 +1,6 @@
 const INPUT: &str = include_str!("../../input/15.txt");
 
+use std::cmp;
 use std::convert::From;
 #[derive(PartialEq)]
 enum Cell {
@@ -26,6 +27,12 @@ impl From<char> for Cell {
             '#' => Self::Wall,
             _ => unreachable!(),
         }
+    }
+}
+
+impl Cell {
+    fn is_box(&self) -> bool {
+        self == &Cell::Box
     }
 }
 
@@ -103,15 +110,11 @@ impl Grid {
                 let mut q = grid.iter().enumerate();
                 q.nth(y);
                 let wrap = q
-                    .map(|(fy, r)| if r[x] == Cell::Box { Some(fy) } else { None })
+                    .map(|(fy, r)| if r[x].is_box() { Some(fy) } else { None })
                     .take_while(Option::is_some)
                     .flatten()
                     .last();
-                queue.1 = if let Some(fy) = wrap {
-                    (x, fy)
-                } else {
-                    queue.0
-                };
+                queue.1 = if let Some(fy) = wrap { (x, cmp::max(fy, y)) } else { queue.0 };
             }
             Dir::Up => {
                 let wrap = grid
@@ -119,29 +122,21 @@ impl Grid {
                     .enumerate()
                     .take(y)
                     .rev()
-                    .map(|(fy, r)| if r[x] == Cell::Box { Some(fy) } else { None })
+                    .map(|(fy, r)| if r[x].is_box() { Some(fy) } else { None })
                     .take_while(Option::is_some)
                     .flatten()
                     .last();
-                queue.1 = if let Some(fy) = wrap {
-                    (x, fy)
-                } else {
-                    queue.0
-                };
+                queue.1 = if let Some(fy) = wrap { (x, cmp::min(fy, y)) } else { queue.0 };
             }
             Dir::Right => {
                 let mut q = grid[y].iter().enumerate();
                 q.nth(x);
                 let wrap = q
-                    .map(|(fx, c)| if *c == Cell::Box { Some(fx) } else { None })
+                    .map(|(fx, c)| if c.is_box() { Some(fx) } else { None })
                     .take_while(Option::is_some)
                     .flatten()
                     .last();
-                queue.1 = if let Some(fx) = wrap {
-                    (fx, y)
-                } else {
-                    queue.0
-                };
+                queue.1 = if let Some(fx) = wrap { (cmp::max(fx, x), y) } else { queue.0 };
             }
             Dir::Left => {
                 let wrap = grid[y]
@@ -149,19 +144,11 @@ impl Grid {
                     .enumerate()
                     .take(x)
                     .rev()
-                    .map(|(fx, c)| if *c == Cell::Box { Some(fx) } else { None })
+                    .map(|(fx, c)| if c.is_box() { Some(fx) } else { None })
                     .take_while(Option::is_some)
                     .flatten()
                     .last();
-                queue.1 = if let Some(fx) = wrap {
-                    if fx < x {
-                        (fx, y)
-                    } else {
-                        queue.0
-                    }
-                } else {
-                    queue.0
-                };
+                queue.1 = if let Some(fx) = wrap { (cmp::min(fx, x), y) } else { queue.0 };
             }
         }
         let (fx, fy) = queue.1;
@@ -197,12 +184,13 @@ impl Grid {
         }
     }
     fn gps(&self) -> usize {
-        self.0.iter()
+        self.0
+            .iter()
             .map(|r| {
                 let t = r
                     .iter()
                     .enumerate()
-                    .filter(|(_x, c)| **c == Cell::Box)
+                    .filter(|(_x, c)| c.is_box())
                     .map(|(x, _c)| x)
                     .collect::<Vec<_>>();
                 (t.iter().sum::<usize>(), t.len())
@@ -214,18 +202,12 @@ impl Grid {
 }
 
 fn main() {
-    let [raw_grid, raw_inst] = INPUT.split("\n\n").collect::<Vec<_>>()[..] else {
-        unreachable!()
-    };
+    let [raw_grid, raw_inst] = INPUT.split("\n\n").collect::<Vec<_>>()[..] else { unreachable!() };
     let mut grid: Grid = raw_grid
         .split('\n')
         .map(|l| l.chars().map(Cell::from).collect::<Vec<Cell>>())
         .collect::<Vec<_>>()
         .into();
-    raw_inst
-        .chars()
-        .filter(|c| *c != '\n')
-        .map(Dir::from)
-        .for_each(|d| grid.shift(d));
+    raw_inst.chars().filter(|c| *c != '\n').map(Dir::from).for_each(|d| grid.shift(d));
     println!("GPS sum: {}", grid.gps());
 }

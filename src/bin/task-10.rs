@@ -58,22 +58,16 @@ fn count_paths((row, col): (usize, usize), height: u8, map: &Vec<Vec<u8>>) -> us
 }
 
 fn main() {
-    let iter = INPUT
-        .lines()
-        .map(|l| l.bytes().map(|b| b - b'0').collect::<Vec<u8>>());
+    let iter = INPUT.lines().map(|l| l.bytes().map(|b| b - b'0').collect::<Vec<u8>>());
     let map = iter.clone().collect::<Vec<Vec<u8>>>();
     let (score, rate) = iter.enumerate().fold((0, 0), |acc, (r_id, r)| {
-        let new = r
-            .iter()
-            .enumerate()
-            .filter(|(_, c)| **c == 9)
-            .fold((0, 0), |acc, (c_id, _)| {
-                let mut visited: Vec<(usize, usize)> = Vec::new();
-                (
-                    acc.0 + get_trailheads((r_id, c_id), 9, &map, &mut visited),
-                    acc.1 + count_paths((r_id, c_id), 9, &map),
-                )
-            });
+        let new = r.iter().enumerate().filter(|(_, c)| **c == 9).fold((0, 0), |acc, (c_id, _)| {
+            let mut visited: Vec<(usize, usize)> = Vec::new();
+            (
+                acc.0 + get_trailheads((r_id, c_id), 9, &map, &mut visited),
+                acc.1 + count_paths((r_id, c_id), 9, &map),
+            )
+        });
         (acc.0 + new.0, acc.1 + new.1)
     });
     println!("Score: {score}");

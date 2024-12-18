@@ -11,10 +11,7 @@ impl Robot {
         let [position, velocity] = line
             .split(' ')
             .map(|x| {
-                let t = x[2..]
-                    .split(',')
-                    .map(|n| n.parse::<isize>().unwrap())
-                    .collect::<Vec<_>>();
+                let t = x[2..].split(',').map(|n| n.parse::<isize>().unwrap()).collect::<Vec<_>>();
                 (t[0], t[1])
             })
             .collect::<Vec<_>>()[..]
@@ -68,13 +65,8 @@ impl Robot {
 
 fn flush(robots: &[Robot], timestamp: usize) {
     let mut output = [['0'; BOUNDS.0 as usize]; BOUNDS.1 as usize];
-    robots
-        .iter()
-        .for_each(|r| output[r.position.1 as usize][r.position.0 as usize] = '1');
-    let output = output
-        .iter()
-        .map(|l| l.iter().collect::<String>())
-        .collect::<Vec<_>>();
+    robots.iter().for_each(|r| output[r.position.1 as usize][r.position.0 as usize] = '1');
+    let output = output.iter().map(|l| l.iter().collect::<String>()).collect::<Vec<_>>();
     if output.iter().any(|l| l.contains("1111111111")) {
         println!("t={timestamp}s");
         output.iter().for_each(|l| println!("{l}"));
@@ -83,9 +75,7 @@ fn flush(robots: &[Robot], timestamp: usize) {
 
 fn main() {
     let mut robots: Vec<Robot> = INPUT.lines().map(Robot::init).collect();
-    robots
-        .iter_mut()
-        .for_each(|r| (0..100).for_each(|_| r.simulate()));
+    robots.iter_mut().for_each(|r| (0..100).for_each(|_| r.simulate()));
     let mut quadrants = [0; 4];
     robots.iter().for_each(|r| r.quadrant(&mut quadrants));
     let safety: usize = quadrants.iter().product();

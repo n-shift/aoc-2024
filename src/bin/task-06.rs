@@ -65,9 +65,7 @@ fn main() {
         .collect::<Vec<usize>>();
     println!(
         "Path length: {}",
-        visited_grid
-            .iter()
-            .fold(0, |acc, c| acc + (*c == Cell::Visited) as usize)
+        visited_grid.iter().fold(0, |acc, c| acc + (*c == Cell::Visited) as usize)
     );
     println!(
         "Obstruction positions: {}",
